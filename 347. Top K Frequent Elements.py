@@ -1,10 +1,7 @@
 """
-Initial plan: Use hashmap to map each element to its occurances. Get the list of values and get the k most frequent keys, but getting those keys will be complex.
+Solution: Use bucket sort. First use hash to get counts of characters, then use an array to sort elements by their occurances (eg. i=1 means ith position has elements with 1 occurance).
+- Iterate backwards to get k most frequent.
 
-Solution: Map the number of occurances to a list of elements with that many occurances and return the k more frequent elements
-- Use hashmap to map each element to its occurances
-- Use nested list to map the occurances from 1 to n to each element
-- Iterate nested list in reverse to get the k most frequent elements
 Time complexity: O(n)
 Space complexity: o(n)
 
@@ -17,19 +14,20 @@ class Solution(object):
         :type k: int
         :rtype: List[int]
         """
+        count = {}
+        frequency = [[] for i in range(len(nums) + 1)]
+        res= []
+
+        for n in nums:
+            count[n] = 1 + count.get(n, 0)
         
-        my_hash = {}
-        occurances = [[] for i in range(len(nums) + 1)]
-
-        for num in nums:
-            my_hash[num] = 1 + my_hash.get(num, 0)
-
-        for num, count in my_hash.items():
-            occurances[count].append(num)  # append num to list with count occurances
-
-        res = []
-        for i in range(len(occurances) - 1, 0, -1):  # iterate from most to least occurances
-            for j in occurances[i]:
+        for i, v in count.items():
+            frequency[v].append(i)
+        
+        for i in frequency[::-1]:
+            for j in i:
                 res.append(j)
-                if len(res) == k:  
+
+                if len(res) == k:
                     return res
+        
