@@ -1,12 +1,8 @@
 """
-Brute: Use nested loops to add every pair to check if their sum is the target.
-- Time complexity: O(n^2)
+Solution: Use hashmap to store visited values/indexes and check if target-current in hash.
 
-Optimized: Use a hashmap to map visited values and their indexes.
-- Iterate over list and check if target - current value = value in hashmap.
 Time complexity: O(n)
 Space complexity: O(n)
-
 """
 
 class Solution(object):
@@ -16,13 +12,13 @@ class Solution(object):
         :type target: int
         :rtype: List[int]
         """
-
-        hash = {}
-
-        for i, num in enumerate(nums):
-            target_summand = target - num
-
-            if target_summand in hash:
-                return [hash[target_summand], i]
-            hash[num] = i
         
+        visited = {}
+
+        for i, t in enumerate(nums):
+            diff = target - t
+            
+            if diff in visited:
+                return [i, visited[diff]]
+            visited[t] = i
+    
