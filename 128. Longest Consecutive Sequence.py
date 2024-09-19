@@ -1,12 +1,8 @@
 """
-Brute: Sort the array and check for sequences, but sorting is O(nlogn) time
+Solution: If element in beginning of sequence, check if subsequent elements exist. Update max based on lengths of each seqeunce.
+- Use set for O(1) access 
 
-Solution: Find the beginning of a possible sequence and track how many subsequent numbers exist.
-- Convert the given array into a set to check existance of element in O(1) time
-- Eg. if the seq should start with 1, check if 0 exists to prove its the start
-- Track how many are in the seq and if its the longest length so far
-
-Time complexity: O(n) - elements visited max 2 times
+Time complexity: O(n) 
 Space complexity: O(1)
 """
 
@@ -18,16 +14,17 @@ class Solution(object):
         """
 
         numsSet = set(nums)
-        longest_len = 0
-        length = 0
-        
-        for n in nums:
-            if (n - 1) not in numsSet:
-                length = 0
-                
-                while (n + length) in numsSet:
-                    length += 1
-                
-                longest_len = max(longest_len, length)
+        max_len = 0
+        curr_len = 0
 
-        return longest_len
+        for n in nums:
+            if (n - 1) not in numsSet:  # start of seq
+                length = 0
+
+                while (n + length) in numsSet:  # next element exists
+                    length += 1
+
+                max_len = max(max_len, length)
+        
+        return max_len
+        
